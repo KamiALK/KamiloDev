@@ -14,24 +14,134 @@ const googelSheet = new GoogleSheetService(
 
 const GLOBAL_STATE = [];
 const MENU_CLIENTE=[];
+
+const Columna = {
+
+  'SOPAS': 1,
+  'PROTEINA': 2,
+  'acomp_a': 6,
+
+};
+
+const PROTEINAS = {
+  1:2,
+  2:3,
+  3:4,
+  4:5,
+}
+
+
+
+
+
+
+
+
 const flowPrincipal = bot
   .addKeyword(["hola", "hi","buenos dias","buenas tardes"])
   .addAnswer([
     `Bienvenidos a mi restaurante de cocina economica automatizado! 🚀`,
     `Tenemos menus diarios variados`,
     `Te gustaria conocerlos ¿?`,
-    `Escribe *menu*`,
+    `Escribe *si*`,
   ]);
 
 
-const flowMenu = bot
-  .addKeyword("menu", { capture: true })
+
+const flowMenu = bot                                                                                                          
+  .addKeyword("menu", { capture: true })                                                                                      
+  .addAnswer(                                                                                                                 
+    `Hoy tenemos el siguiente menú:`,                                                                                         
+    null,                                                                                                                     
+    async (_, { flowDynamic }) => {                                                                                           
+      try {                                                                                                                   
+        const columnNumber=1;                                                                                                 
+        const getMenu = await googelSheet.retriveDayMenu(columnNumber); // Recupera el menú del día actual sin usar fechas    
+                                                                                                                              
+        if (getMenu.length === 0) {                                                                                           
+          await flowDynamic("Lo siento, no hay menú disponible para hoy.");                                                   
+          return;                                                                                                             
+        }                                                                                                                     
+                                                                                                                              
+        for (const menu of getMenu) {                                                                                         
+          GLOBAL_STATE.push(menu);                                                                                            
+          await flowDynamic(menu);                                                                                            
+        }                                                                                                                     
+        console.log("Contenido de GLOBAL_STATE:", GLOBAL_STATE);                                                              
+      } catch (error) {                                                                                                       
+        console.error("Error al recuperar el menú:", error);                                                                  
+        await flowDynamic("Lo siento, hubo un error al recuperar el menú. Por favor, inténtalo de nuevo más tarde.");         
+      }                                                                                                                       
+    }                                                                                                                         
+  )                                                                                                                           
+  .addAnswer(                                                                                                                 
+    `¿Te interesa alguno marca la opcion?`,                                                                                   
+    { capture: true },                                                                                                        
+    async (ctx, { gotoFlow, state }) => {                                                                                     
+      const opcionSeleccionada = parseInt(ctx.body.trim()); // Convertir la opción seleccionada a un entero
+      const seleccion = GLOBAL_STATE[opcionSeleccionada - 1]; // Obtener el elemento correspondiente en GLOBAL_STATE
+
+      // Almacenar el elemento seleccionado en el estado
+      state.update({ pedido: seleccion });                                                                                  
+
+      // Redirigir al flujo de pedido                                                                                         
+      return gotoFlow(flowPedido);                                                                                              
+    }                                                                                                                         
+  );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const flowNextProteina= bot
+  .addKeyword("si", { capture: true })
   .addAnswer(
-    `Hoy tenemos el siguiente menú:`,
+    `Tenenmos las siguientes carnes:`,
     null,
     async (_, { flowDynamic }) => {
       try {
-        const columnNumber=1;
+        const columnNumber=2;
         const getMenu = await googelSheet.retriveDayMenu(columnNumber); // Recupera el menú del día actual sin usar fechas
         
         if (getMenu.length === 0) {
@@ -49,17 +159,161 @@ const flowMenu = bot
         await flowDynamic("Lo siento, hubo un error al recuperar el menú. Por favor, inténtalo de nuevo más tarde.");
       }
     }
-  );
+  )
+  .addAnswer(                                                                                                               
+    `¿Te interesa alguno marca la opcion?`,                                                                                 
+    { capture: true },                                                                                                      
+    async (ctx, { gotoFlow, state }) => {                                                                                   
+      // Almacenar la opción seleccionada en el estado                                                                      
+      state.update({ pedido: ctx.body.trim() });                                                                            
+                                                                                                                            
+      // Redirigir al flujo de pedido                                                                                       
+      return gotoFlow(flowMenu);                                                                                          
+    }                                                                                                                       
+  )                                                                                                                         
+
+
+
+
+
+
+
+
+
+
+
+
+const flowProteina = bot                                                                                                   
+  .addKeyword("proteina", { capture: true })                                                                               
+  .addAnswer(                                                                                                              
+    `Hoy tenemos el siguiente menú:`,                                                                                      
+    null,                                                                                                                  
+    async (_, { flowDynamic }) => {                                                                                        
+      try {                                                                                                                
+        const columnNumber = 1;                                                                                            
+        const getMenu = await googelSheet.retriveDayMenu(columnNumber); // Recupera el menú del día actual sin usar fechas 
+                                                                                                                           
+        if (getMenu.length === 0) {                                                                                        
+          await flowDynamic("Lo siento, no hay menú disponible para hoy.");                                                
+          return;                                                                                                          
+        }                                                                                                                  
+                                                                                                                           
+        // Mostrar el menú al usuario y registrar las selecciones                                                          
+        for (const option of getMenu) {                                                                                    
+          await flowDynamic(option); // Mostrar opción al usuario                                                          
+          const userInput = await flowDynamic(); // Esperar la respuesta del usuario                                       
+                                                                                                                           
+          // Almacenar la selección del usuario en MENU_CLIENTE o en el diccionario                                        
+          MENU_CLIENTE[option] = userInput;                                                                                
+        }                                                                                                                  
+                                                                                                                           
+        console.log("Selecciones del usuario:", MENU_CLIENTE); // Mostrar las selecciones del usuario                      
+      } catch (error) {                                                                                                    
+        console.error("Error al recuperar el menú:", error);                                                               
+        await flowDynamic("Lo siento, hubo un error al recuperar el menú. Por favor, inténtalo de nuevo más tarde.");      
+      }                                                                                                                    
+    }                                                                                                                      
+  )                                                                                                                       
+  .addAnswer(                                                                                                            
+    `¿Te interesa alguno marca la opcion?`,                                                                              
+    { capture: true },                                                                                                   
+    async (ctx, { gotoFlow, state }) => {                                                                                
+      // Almacenar la opción seleccionada en el estado                                                                   
+      state.update({ pedido: ctx.body.trim() });                                                                         
+                                                                                                                           
+      // Redirigir al flujo de pedido                                                                                    
+      return gotoFlow(flowMenu);                                                                                       
+    }                                                                                                                    
+  )                                                                                                           
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const flowPrueba = bot
-  .addKeyword("prueba")
+  .addKeyword("prueba", {capture:true})
   .addAnswer(
     `Hoy tenemos el siguiente menú:`,
     null,
     async (_, { flowDynamic }) => {
       try {
         const dayNumber = 1;
-        const getMenu = await googelSheet.retrivePrueba (dayNumber); // Recupera el menú del día actual sin usar fechas
+        const getMenu = await googelSheet.retriveDayMenu (dayNumber); // Recupera el menú del día actual sin usar fechas
         
         if (getMenu.length === 0) {
           await flowDynamic("Lo siento, no hay menú disponible para hoy.");
@@ -78,6 +332,11 @@ const flowPrueba = bot
       }
     }
   );
+
+
+
+
+
 const flowEmpty = bot
   .addKeyword(bot.EVENTS.ACTION)
   .addAnswer("No te he entendido!", null, async (_, { gotoFlow }) => {
@@ -142,6 +401,7 @@ const main = async () => {
     flowMenu,
     flowPrueba,
     flowPedido,
+    flowProteina,
     testFlow,
     flowEmpty,
   ]);

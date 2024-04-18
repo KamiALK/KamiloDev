@@ -32,7 +32,7 @@ class GoogleSheetService {
       const list = [];
       await this.doc.loadInfo();
       const sheet = this.doc.sheetsByIndex[0]; // the first sheet
-      await sheet.loadCells("A1:H10");
+      await sheet.loadCells("A1:J10");
       const rows = await sheet.getRows();
       for (const a of Array.from(Array(rows.length).keys())) {
         const cellA1 = sheet.getCell(a + 1, columnNumber - 1);
