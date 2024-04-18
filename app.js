@@ -9,7 +9,7 @@ import MockAdapter from "@bot-whatsapp/database/mock";
 import GoogleSheetService from "./services/sheets/index.js";
 
 const googelSheet = new GoogleSheetService(
- "1pcBkWWa0x-q-mwV54bRMOixjCv-tFVvLSrzGPsPPQgQ" 
+ "sheet de google" 
 );
 
 let GLOBAL_STATE = [];
