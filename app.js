@@ -66,19 +66,24 @@ const flowAcomp_a = bot
     `¿Te interesa alguno marca la opcion?`,
     { capture: true },
     async (ctx, { gotoFlow, state }) => {
-      const opcionSeleccionada = parseInt(ctx.body.trim()); // Convertir la opción seleccionada a un entero
-      const seleccion = GLOBAL_STATE[opcionSeleccionada - 1]; // Obtener el elemento correspondiente en GLOBAL_STATE
-      // Almacenar la selección del usuario en MENU_CLIENTE
-      MENU_CLIENTE.acomp_a.push(seleccion);
-      // Almacenar el elemento seleccionado en el estado
-      state.update({ pedido: seleccion });
+      try {
+        const opcionSeleccionada = parseInt(ctx.body.trim()); // Convertir la opción seleccionada a un entero
+        const seleccion = GLOBAL_STATE[opcionSeleccionada - 1]; // Obtener el elemento correspondiente en GLOBAL_STATE
+        // Almacenar la selección del usuario en MENU_CLIENTE
+        MENU_CLIENTE.acomp_a.push(seleccion);
+        // Almacenar el elemento seleccionado en el estado
+        state.update({ pedido: seleccion });
 
-      GLOBAL_STATE = [];
-      // Redirigir al flujo de pedido
-      return gotoFlow(flowAcomp_b);
+        GLOBAL_STATE = [];
+        // Redirigir al flujo de pedido
+        return gotoFlow(flowAcomp_b);
+      } catch (error) {
+        console.error("Ocurrió un error:", error);
+        // Redirigir al flujo principal en caso de error
+        return gotoFlow(flowPrincipal);
+      }
     },
   );
-
 const flowProteina = bot
   .addKeyword("si", { capture: true })
   .addAnswer(
@@ -221,16 +226,22 @@ const flowPescado = bot
     `¿Te interesa alguno marca la opcion?`,
     { capture: true },
     async (ctx, { gotoFlow, state }) => {
-      const opcionSeleccionada = parseInt(ctx.body.trim()); // Convertir la opción seleccionada a un entero
-      const seleccion = GLOBAL_STATE[opcionSeleccionada - 1]; // Obtener el elemento correspondiente en GLOBAL_STATE
-      // Almacenar la selección del usuario en MENU_CLIENTE
-      MENU_CLIENTE.pescado.push(seleccion);
-      // Almacenar el elemento seleccionado en el estado
-      state.update({ pedido: seleccion });
+      try {
+        const opcionSeleccionada = parseInt(ctx.body.trim()); // Convertir la opción seleccionada a un entero
+        const seleccion = GLOBAL_STATE[opcionSeleccionada - 1]; // Obtener el elemento correspondiente en GLOBAL_STATE
+        // Almacenar la selección del usuario en MENU_CLIENTE
+        MENU_CLIENTE.pescado.push(seleccion);
+        // Almacenar el elemento seleccionado en el estado
+        state.update({ pedido: seleccion });
 
-      GLOBAL_STATE = [];
-      // Redirigir al flujo de pedido
-      return gotoFlow(flowAcomp_a);
+        GLOBAL_STATE = [];
+        // Redirigir al flujo de pedido
+        return gotoFlow(flowAcomp_a);
+      } catch (error) {
+        console.error("Ocurrió un error:", error);
+        // Redirigir al flujo principal en caso de error
+        return gotoFlow(flowPrincipal);
+      }
     },
   );
 
@@ -261,23 +272,29 @@ const flowRes = bot
       }
     },
   )
+
   .addAnswer(
     `¿Te interesa alguno marca la opcion?`,
     { capture: true },
     async (ctx, { gotoFlow, state }) => {
-      const opcionSeleccionada = parseInt(ctx.body.trim()); // Convertir la opción seleccionada a un entero
-      const seleccion = GLOBAL_STATE[opcionSeleccionada - 1]; // Obtener el elemento correspondiente en GLOBAL_STATE
-      // Almacenar la selección del usuario en MENU_CLIENTE
-      MENU_CLIENTE.res.push(seleccion);
-      // Almacenar el elemento seleccionado en el estado
-      state.update({ pedido: seleccion });
+      try {
+        const opcionSeleccionada = parseInt(ctx.body.trim()); // Convertir la opción seleccionada a un entero
+        const seleccion = GLOBAL_STATE[opcionSeleccionada - 1]; // Obtener el elemento correspondiente en GLOBAL_STATE
+        // Almacenar la selección del usuario en MENU_CLIENTE
+        MENU_CLIENTE.pescado.push(seleccion);
+        // Almacenar el elemento seleccionado en el estado
+        state.update({ pedido: seleccion });
 
-      GLOBAL_STATE = [];
-      // Redirigir al flujo de pedido
-      return gotoFlow(flowAcomp_a);
+        GLOBAL_STATE = [];
+        // Redirigir al flujo de pedido
+        return gotoFlow(flowAcomp_a);
+      } catch (error) {
+        console.error("Ocurrió un error:", error);
+        // Redirigir al flujo principal en caso de error
+        return gotoFlow(flowPrincipal);
+      }
     },
   );
-
 const flowCerdo = bot
   .addKeyword("menu", { capture: true })
   .addAnswer(
@@ -305,23 +322,29 @@ const flowCerdo = bot
       }
     },
   )
+
   .addAnswer(
     `¿Te interesa alguno marca la opcion?`,
     { capture: true },
     async (ctx, { gotoFlow, state }) => {
-      const opcionSeleccionada = parseInt(ctx.body.trim()); // Convertir la opción seleccionada a un entero
-      const seleccion = GLOBAL_STATE[opcionSeleccionada - 1]; // Obtener el elemento correspondiente en GLOBAL_STATE
-      // Almacenar la selección del usuario en MENU_CLIENTE
-      MENU_CLIENTE.cerdo.push(seleccion);
-      // Almacenar el elemento seleccionado en el estado
-      state.update({ pedido: seleccion });
+      try {
+        const opcionSeleccionada = parseInt(ctx.body.trim()); // Convertir la opción seleccionada a un entero
+        const seleccion = GLOBAL_STATE[opcionSeleccionada - 1]; // Obtener el elemento correspondiente en GLOBAL_STATE
+        // Almacenar la selección del usuario en MENU_CLIENTE
+        MENU_CLIENTE.cerdo.push(seleccion);
+        // Almacenar el elemento seleccionado en el estado
+        state.update({ pedido: seleccion });
 
-      GLOBAL_STATE = [];
-      // Redirigir al flujo de pedido
-      return gotoFlow(flowAcomp_a);
+        GLOBAL_STATE = [];
+        // Redirigir al flujo de pedido
+        return gotoFlow(flowAcomp_a);
+      } catch (error) {
+        console.error("Ocurrió un error:", error);
+        // Redirigir al flujo principal en caso de error
+        return gotoFlow(flowPrincipal);
+      }
     },
   );
-
 const flowAcomp_b = bot
   .addKeyword("menu", { capture: true })
   .addAnswer(
@@ -349,23 +372,29 @@ const flowAcomp_b = bot
       }
     },
   )
+
   .addAnswer(
     `¿Te interesa alguno marca la opcion?`,
     { capture: true },
     async (ctx, { gotoFlow, state }) => {
-      const opcionSeleccionada = parseInt(ctx.body.trim()); // Convertir la opción seleccionada a un entero
-      const seleccion = GLOBAL_STATE[opcionSeleccionada - 1]; // Obtener el elemento correspondiente en GLOBAL_STATE
-      // Almacenar la selección del usuario en MENU_CLIENTE
-      MENU_CLIENTE.acomp_b.push(seleccion);
-      // Almacenar el elemento seleccionado en el estado
-      state.update({ pedido: seleccion });
+      try {
+        const opcionSeleccionada = parseInt(ctx.body.trim()); // Convertir la opción seleccionada a un entero
+        const seleccion = GLOBAL_STATE[opcionSeleccionada - 1]; // Obtener el elemento correspondiente en GLOBAL_STATE
+        // Almacenar la selección del usuario en MENU_CLIENTE
+        MENU_CLIENTE.acomp_b.push(seleccion);
+        // Almacenar el elemento seleccionado en el estado
+        state.update({ pedido: seleccion });
 
-      GLOBAL_STATE = [];
-      // Redirigir al flujo de pedido
-      return gotoFlow(flowAcomp_c);
+        GLOBAL_STATE = [];
+        // Redirigir al flujo de pedido
+        return gotoFlow(flowAcomp_c);
+      } catch (error) {
+        console.error("Ocurrió un error:", error);
+        // Redirigir al flujo principal en caso de error
+        return gotoFlow(flowPrincipal);
+      }
     },
   );
-
 const flowAcomp_c = bot
   .addKeyword("menu", { capture: true })
   .addAnswer(
@@ -393,23 +422,29 @@ const flowAcomp_c = bot
       }
     },
   )
+
   .addAnswer(
     `¿Te interesa alguno marca la opcion?`,
     { capture: true },
     async (ctx, { gotoFlow, state }) => {
-      const opcionSeleccionada = parseInt(ctx.body.trim()); // Convertir la opción seleccionada a un entero
-      const seleccion = GLOBAL_STATE[opcionSeleccionada - 1]; // Obtener el elemento correspondiente en GLOBAL_STATE
-      // Almacenar la selección del usuario en MENU_CLIENTE
-      MENU_CLIENTE.acomp_c.push(seleccion);
-      // Almacenar el elemento seleccionado en el estado
-      state.update({ pedido: seleccion });
+      try {
+        const opcionSeleccionada = parseInt(ctx.body.trim()); // Convertir la opción seleccionada a un entero
+        const seleccion = GLOBAL_STATE[opcionSeleccionada - 1]; // Obtener el elemento correspondiente en GLOBAL_STATE
+        // Almacenar la selección del usuario en MENU_CLIENTE
+        MENU_CLIENTE.acomp_c.push(seleccion);
+        // Almacenar el elemento seleccionado en el estado
+        state.update({ pedido: seleccion });
 
-      GLOBAL_STATE = [];
-      // Redirigir al flujo de pedido
-      return gotoFlow(flowSopa);
+        GLOBAL_STATE = [];
+        // Redirigir al flujo de pedido
+        return gotoFlow(flowSopa);
+      } catch (error) {
+        console.error("Ocurrió un error:", error);
+        // Redirigir al flujo principal en caso de error
+        return gotoFlow(flowPrincipal);
+      }
     },
   );
-
 const flowSopa = bot
   .addKeyword("menu", { capture: true })
   .addAnswer(
@@ -437,23 +472,29 @@ const flowSopa = bot
       }
     },
   )
+
   .addAnswer(
     `¿Te interesa alguno marca la opcion?`,
     { capture: true },
     async (ctx, { gotoFlow, state }) => {
-      const opcionSeleccionada = parseInt(ctx.body.trim()); // Convertir la opción seleccionada a un entero
-      const seleccion = GLOBAL_STATE[opcionSeleccionada - 1]; // Obtener el elemento correspondiente en GLOBAL_STATE
-      // Almacenar la selección del usuario en MENU_CLIENTE
-      MENU_CLIENTE.sopa.push(seleccion);
-      // Almacenar el elemento seleccionado en el estado
-      state.update({ pedido: seleccion });
+      try {
+        const opcionSeleccionada = parseInt(ctx.body.trim()); // Convertir la opción seleccionada a un entero
+        const seleccion = GLOBAL_STATE[opcionSeleccionada - 1]; // Obtener el elemento correspondiente en GLOBAL_STATE
+        // Almacenar la selección del usuario en MENU_CLIENTE
+        MENU_CLIENTE.sopa.push(seleccion);
+        // Almacenar el elemento seleccionado en el estado
+        state.update({ pedido: seleccion });
 
-      GLOBAL_STATE = [];
-      // Redirigir al flujo de pedido
-      return gotoFlow(flowBebida);
+        GLOBAL_STATE = [];
+        // Redirigir al flujo de pedido
+        return gotoFlow(flowBebida);
+      } catch (error) {
+        console.error("Ocurrió un error:", error);
+        // Redirigir al flujo principal en caso de error
+        return gotoFlow(flowPrincipal);
+      }
     },
   );
-
 const flowBebida = bot
   .addKeyword("menu", { capture: true })
   .addAnswer(
@@ -481,23 +522,29 @@ const flowBebida = bot
       }
     },
   )
+
   .addAnswer(
     `¿Te interesa alguno marca la opcion?`,
     { capture: true },
     async (ctx, { gotoFlow, state }) => {
-      const opcionSeleccionada = parseInt(ctx.body.trim()); // Convertir la opción seleccionada a un entero
-      const seleccion = GLOBAL_STATE[opcionSeleccionada - 1]; // Obtener el elemento correspondiente en GLOBAL_STATE
-      // Almacenar la selección del usuario en MENU_CLIENTE
-      MENU_CLIENTE.bebida.push(seleccion);
-      // Almacenar el elemento seleccionado en el estado
-      state.update({ pedido: seleccion });
+      try {
+        const opcionSeleccionada = parseInt(ctx.body.trim()); // Convertir la opción seleccionada a un entero
+        const seleccion = GLOBAL_STATE[opcionSeleccionada - 1]; // Obtener el elemento correspondiente en GLOBAL_STATE
+        // Almacenar la selección del usuario en MENU_CLIENTE
+        MENU_CLIENTE.bebida.push(seleccion);
+        // Almacenar el elemento seleccionado en el estado
+        state.update({ pedido: seleccion });
 
-      GLOBAL_STATE = [];
-      // Redirigir al flujo de pedido
-      return gotoFlow(flowPedido);
+        GLOBAL_STATE = [];
+        // Redirigir al flujo de pedido
+        return gotoFlow(flowPedido);
+      } catch (error) {
+        console.error("Ocurrió un error:", error);
+        // Redirigir al flujo principal en caso de error
+        return gotoFlow(flowPrincipal);
+      }
     },
   );
-
 const flowEmpty = bot
   .addKeyword(bot.EVENTS.ACTION)
   .addAnswer("No te he entendido!", null, async (_, { gotoFlow }) => {
