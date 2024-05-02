@@ -1,4 +1,4 @@
-n de_modules/
+node_modules/
 key.json
 bot_*
 .env
